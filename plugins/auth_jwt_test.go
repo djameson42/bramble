@@ -51,7 +51,7 @@ p0iyWSAWba0DzesGGzUwknJJZ+Lw6aNRSBqgvmVia38YTyOCRxcaaTFHahc3hyNN
 QQIDAQAB
 -----END PUBLIC KEY-----`
 
-func TestAuthMiddleware(t *testing.T) {
+func TestJWTPlugin(t *testing.T) {
 	manualKeyProvider, err := NewManualSigningKeysProvider(map[string]string{"": testPublicKey})
 	require.NoError(t, err)
 	keyProviders := []SigningKeyProvider{manualKeyProvider}
