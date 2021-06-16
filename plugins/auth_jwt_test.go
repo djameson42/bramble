@@ -66,6 +66,12 @@ func TestJWTPlugin(t *testing.T) {
 
 		token, err := jwt.NewWithClaims(jwt.SigningMethodRS256, &Claims{
 			Role: "basic_role",
+			StandardClaims: jwt.StandardClaims{
+				Audience: "test-audience",
+				Id:       "test-id",
+				Issuer:   "test-issuer",
+				Subject:  "test-subject",
+			},
 		}).SignedString(privateKey)
 		require.NoError(t, err)
 
@@ -83,7 +89,6 @@ func TestJWTPlugin(t *testing.T) {
 		handler := jwtPlugin.ApplyMiddlewarePublicMux(mockHandler)
 		req := httptest.NewRequest(http.MethodPost, "/query", strings.NewReader("{}"))
 		req.Header.Add("authorization", "Bearer "+token)
-		req.Header.Add("X-Bramble-Ingress-Source", "internal")
 		rr := httptest.NewRecorder()
 
 		handler.ServeHTTP(rr, req)

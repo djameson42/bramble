@@ -16,7 +16,12 @@ import (
 )
 
 func init() {
-	bramble.RegisterPlugin(&JWTPlugin{})
+	bramble.RegisterPlugin(&JWTPlugin{
+		jwtExtractor: request.MultiExtractor{
+			request.AuthorizationHeaderExtractor,
+			cookieTokenExtractor{cookieName: "token"},
+		},
+	})
 }
 
 func NewJWTPlugin(keyProviders []SigningKeyProvider, roles map[string]bramble.OperationPermissions) *JWTPlugin {
